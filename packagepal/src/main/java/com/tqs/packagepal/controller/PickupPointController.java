@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.tqs.packagepal.model.PickupPoint;
 import com.tqs.packagepal.service.PickupPointService;
@@ -30,6 +31,18 @@ public class PickupPointController {
         return pickupPointService.getPickupPointById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<Optional<PickupPoint>> getPickupPointsByCity(@PathVariable String city) {
+        Optional<PickupPoint> pickupPoints = pickupPointService.getPickupPointsByCity(city);
+        return ResponseEntity.ok(pickupPoints);
+    }
+
+    @GetMapping("/postalcode/{postalcode}")
+    public ResponseEntity<Optional<PickupPoint>> getPickupPointsByPostalCode(@PathVariable String postalcode) {
+        Optional<PickupPoint> pickupPoints = pickupPointService.getPickupPointsByPostalCode(postalcode);
+        return ResponseEntity.ok(pickupPoints);
     }
 
     @PostMapping

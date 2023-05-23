@@ -27,7 +27,7 @@ public class Package {
     private Long id;
 
     @Column(name = "package_id")
-    private Long packageId;
+    private String packageId;
 
     @Column(name = "user_name")
     private String userName;
@@ -39,12 +39,12 @@ public class Package {
     @Column(name = "status")
     private DeliveryStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "pickup_point", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PickupPoint pickupPoint;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "store", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Store store;
@@ -54,7 +54,7 @@ public class Package {
     public Package() {
     }
 
-    public Package(Long packageId, String userName, String userEmail, DeliveryStatus status, PickupPoint pickupPoint,
+    public Package(String packageId, String userName, String userEmail, DeliveryStatus status, PickupPoint pickupPoint,
             Store store) {
         this.packageId = packageId;
         this.userName = userName;
@@ -70,7 +70,7 @@ public class Package {
         return id;
     }
 
-    public Long getPackageId() {
+    public String getPackageId() {
         return packageId;
     }
 
@@ -94,7 +94,7 @@ public class Package {
         return status;
     }
 
-    public void setPackageId(Long packageId) {
+    public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
 

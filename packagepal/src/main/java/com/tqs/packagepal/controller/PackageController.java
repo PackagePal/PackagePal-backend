@@ -27,14 +27,23 @@ public class PackageController {
     @GetMapping
     public ResponseEntity<List<Package>> getAllPackages() {
         List<Package> packages = packageService.getAllPackages();
-        return ResponseEntity.ok().body(packages);
+        return ResponseEntity.ok(packages);
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<Package> getPackageById(@PathVariable Long id) {
-        Optional<Package> packages = packageService.findPackageById(Long.valueOf(id));
-        if(packages.isPresent()){
-            return ResponseEntity.ok().body(packages.get());
+    @GetMapping("/{packageId}")
+    public ResponseEntity<Package> getPackageById(@PathVariable("packageId") String packageId) {
+        Optional<Package> pack = packageService.findPackageById(packageId);
+        if(pack.isPresent()){
+            return ResponseEntity.ok(pack.get());
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Package>> getPackagesByUserEmail(@PathVariable("email") String userEmail) {
+        List<Package> packages = packageService.findPackagesByUserEmail(userEmail);
+        if (!packages.isEmpty()) {
+            return ResponseEntity.ok(packages);
         }
         return ResponseEntity.noContent().build();
     }
@@ -51,15 +60,14 @@ public class PackageController {
 
     @PostMapping
     public ResponseEntity<Package> createPackage(@RequestBody Package pack) {
-        Package createdPackage = packageService.savePackage(pack);
+        Package createdPackage = packageService.addPackage(pack);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPackage);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePackage(@PathVariable Long id) {
-        Optional<Package> packageOptional = packageService.findPackageById(id);
-        if (packageOptional.isPresent()) {
-            packageService.deletePackage(id);
+    public ResponseEntity<Void> deletePackage(@PathVariable("id") Long packageId) {
+        boolean deleted = packageService.deletePackage(packageId);
+        if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

@@ -22,28 +22,36 @@ public class PickupPoint {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "postalcode")
+    private String postalCode;
+
+    @Column(name = "lat")
+    private Double lat;
+
+    @Column(name = "lng")
+    private Double lng;
 
     // Construtores
 
     public PickupPoint() {
     }
 
-    public PickupPoint(String name, String address, String email) {
+    public PickupPoint(String name, String address, String city, String postalCode, Double lat, Double lng) {
         this.name = name;
         this.address = address;
-        this.email = email;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     // Getters
 
     public String getAddress() {
         return address;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public Long getId() {
@@ -54,14 +62,26 @@ public class PickupPoint {
         return name;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
     // Setters
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setId(Long id) {
@@ -70,6 +90,26 @@ public class PickupPoint {
 
     public void setName(String name) {
         this.name = name;
+
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
 
     }
 
@@ -84,12 +124,14 @@ public class PickupPoint {
         }
         PickupPoint pickupPoint = (PickupPoint) o;
         return Objects.equals(id, pickupPoint.id) && Objects.equals(name, pickupPoint.name)
-                && Objects.equals(address, pickupPoint.address) && Objects.equals(email, pickupPoint.email);
+                && Objects.equals(address, pickupPoint.address) && Objects.equals(city, pickupPoint.city)
+                && Objects.equals(postalCode, pickupPoint.postalCode) && Objects.equals(lat, pickupPoint.lat)
+                && Objects.equals(lng, pickupPoint.lng);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, email);
+        return Objects.hash(id, name, address, city, postalCode, lat, lng);
     }
 
     // toString
@@ -97,7 +139,8 @@ public class PickupPoint {
     @Override
     public String toString() {
         return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'" + ", address='" + getAddress() + "'"
-                + ", email='" + getEmail() + "'" + "}";
+                + ", city='" + getCity() + "'" + ", postalCode='" + getPostalCode() + "'" + ", lat='" + getLat() + "'"
+                + ", lng='" + getLng() + "'" + "}";
     }
 
 }

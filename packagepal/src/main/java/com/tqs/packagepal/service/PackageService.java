@@ -20,24 +20,37 @@ public class PackageService {
         return packageRepository.findAll();
     }
 
-    public Optional<Package> findPackageById(Long id) {
-        return packageRepository.findByPackageId(id);
+    public Optional<Package> findPackageById(String packageId) {
+        return packageRepository.findByPackageId(packageId);
     }
 
     public List<Package> findPackagesByPickupPoint(PickupPoint pickupPoint) {
         return packageRepository.findByPickupPoint(pickupPoint);
     }
-
+    
     public List<Package> findPackagesByStore(Store store) {
         return packageRepository.findByStore(store);
     }
 
-    public Package savePackage(Package pack) {
+    public List<Package> findPackagesByUserEmail(String userEmail) {
+        return packageRepository.findByUserEmail(userEmail);
+    }
+
+    public Package addPackage(Package pack) {
+        Optional<Package> packageOptional = packageRepository.findByPackageId(pack.getPackageId());
+        if (packageOptional.isPresent()) {
+            return packageOptional.get();
+        }
         return packageRepository.save(pack);
     }
 
-    public void deletePackage(Long id) {
-        packageRepository.deleteById(id);
+    public boolean deletePackage(Long packageId) {
+        Optional<Package> packageOptional = packageRepository.findById(packageId);
+        if (packageOptional.isPresent()) {
+            packageRepository.delete(packageOptional.get());
+            return true;
+        }
+        return false;
     }
 
 }

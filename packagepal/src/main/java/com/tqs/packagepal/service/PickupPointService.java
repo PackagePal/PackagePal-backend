@@ -39,12 +39,16 @@ public class PickupPointService {
         return pickupPointRepository.findByName(name);
     }
 
-    public Optional<PickupPoint> getPickupPointByEmail(String email) {
-        return pickupPointRepository.findByEmail(email);
-    }
-
     public Optional<PickupPoint> getPickupPointByAddress(String address) {
         return pickupPointRepository.findByAddress(address);
+    }
+
+    public Optional<PickupPoint> getPickupPointsByCity(String city) {
+        return pickupPointRepository.findByCity(city);
+    }
+
+    public Optional<PickupPoint> getPickupPointsByPostalCode(String postalCode) {
+        return pickupPointRepository.findByPostalCode(postalCode);
     }
 
 }

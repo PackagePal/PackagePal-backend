@@ -10,6 +10,7 @@ import com.tqs.packagepal.model.PickupPoint;
 @Repository
 public interface PickupPointRepository extends JpaRepository<PickupPoint,Long>{
     Optional<PickupPoint> findByName(String string);
-    Optional<PickupPoint> findByEmail(String email);
     Optional<PickupPoint> findByAddress(String address);
+    Optional<PickupPoint> findByCity(String city);
+    Optional<PickupPoint> findByPostalCode(String postalCode);
 }
