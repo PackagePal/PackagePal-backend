@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -23,7 +23,7 @@ jobs:
         java-version: '17'
         
     - name: Build with Maven
-      run: mvn clean install
+      run: cd backend && mvn clean install
 
     - name: Run tests
       run: mvn test
