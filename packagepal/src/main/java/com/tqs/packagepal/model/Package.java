@@ -35,9 +35,6 @@ public class Package {
     @Column(name = "user_email")
     private String userEmail;
 
-    @Column(name = "price")
-    private Double price;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private DeliveryStatus status;
@@ -57,12 +54,11 @@ public class Package {
     public Package() {
     }
 
-    public Package(String packageId, String userName, String userEmail, Double price, DeliveryStatus status,
+    public Package(String packageId, String userName, String userEmail, DeliveryStatus status,
             PickupPoint pickupPoint, Store store) {
         this.packageId = packageId;
         this.userName = userName;
         this.userEmail = userEmail;
-        this.price = price;
         this.status = status;
         this.pickupPoint = pickupPoint;
         this.store = store;
@@ -98,10 +94,6 @@ public class Package {
         return status;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
     public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
@@ -126,10 +118,6 @@ public class Package {
         this.status = status;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     // Equals e Hashcode
 
     @Override
@@ -143,12 +131,12 @@ public class Package {
         return Objects.equals(id, pack.id) && Objects.equals(packageId, pack.packageId)
                 && Objects.equals(pickupPoint, pack.pickupPoint) && Objects.equals(store, pack.store)
                 && Objects.equals(userEmail, pack.userEmail) && Objects.equals(userName, pack.userName)
-                && Objects.equals(status, pack.status) && Objects.equals(price, pack.price);
+                && Objects.equals(status, pack.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, packageId, pickupPoint, store, userEmail, userName, status, price);
+        return Objects.hash(id, packageId, pickupPoint, store, userEmail, userName, status);
     }
 
     // toString
@@ -157,8 +145,7 @@ public class Package {
     public String toString() {
         return "{" + " id='" + getId() + "'" + ", packageId='" + getPackageId() + "'" + ", pickupPoint='"
                 + getPickupPoint() + "'" + ", store='" + getStore() + "'" + ", userEmail='" + getUserEmail() + "'"
-                + ", userName='" + getUserName() + "'" + ", status='" + getStatus() + "'" + ", price='" + getPrice()
-                + "'" + "}";
+                + ", userName='" + getUserName() + "'" + ", status='" + getStatus() + "'" + "}";
     }
 
 }   
