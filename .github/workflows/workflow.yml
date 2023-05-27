@@ -23,16 +23,16 @@ jobs:
         java-version: '17'
         
     - name: Build with Maven
-      run: cd packagepal  && mvn clean install
+      run: cd packagepal && mvn clean install
 
     - name: Run tests
-      run: mvn test
+      run: cd packagepal && mvn test
 
     - name: Set up H2 Database
-      run: mvn spring-boot:start
+      run: cd packagepal && mvn spring-boot:start
 
     - name: Run database migrations
-      run: mvn flyway:migrate
+      run: cd packagepal && mvn flyway:migrate
 
     - name: Stop H2 Database
-      run: mvn spring-boot:stop
+      run: cd packagepal && mvn spring-boot:stop
