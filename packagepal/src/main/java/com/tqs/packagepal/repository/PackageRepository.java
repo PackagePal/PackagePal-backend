@@ -16,4 +16,5 @@ public interface PackageRepository extends JpaRepository<Package,Long>{
     List<Package> findByPickupPoint(PickupPoint pickupPoint);
     List<Package> findByStore(Store store);
     List<Package> findByUserEmail(String userEmail);
+    
 }
