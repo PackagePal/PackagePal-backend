@@ -1,5 +1,6 @@
 package com.tqs.packagepal.controller;
 
+import com.tqs.packagepal.model.DeliveryStatus;
 import com.tqs.packagepal.model.Package;
 import com.tqs.packagepal.model.PickupPoint;
 import com.tqs.packagepal.service.PackageService;
@@ -56,6 +57,22 @@ public class PackageController {
             return ResponseEntity.ok().body(packages);
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{packageId}/status")
+    public ResponseEntity<Package> updatePackageStatus(
+        @PathVariable("packageId") String packageId,
+        @RequestBody DeliveryStatus newStatus
+    ) {
+        Optional<Package> optionalPackage = packageService.findPackageById(packageId);
+        if (optionalPackage.isPresent()) {
+            Package pack = optionalPackage.get();
+            pack.setStatus(newStatus);
+            Package updatedPackage = packageService.addPackage(pack);
+            return ResponseEntity.ok(updatedPackage);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
