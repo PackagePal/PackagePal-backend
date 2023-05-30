@@ -44,8 +44,8 @@ public class PackageService {
         return packageRepository.save(pack);
     }
 
-    public boolean deletePackage(Long packageId) {
-        Optional<Package> packageOptional = packageRepository.findById(packageId);
+    public boolean deletePackage(String packageId) {
+        Optional<Package> packageOptional = packageRepository.findByPackageId(packageId);
         if (packageOptional.isPresent()) {
             packageRepository.delete(packageOptional.get());
             return true;
