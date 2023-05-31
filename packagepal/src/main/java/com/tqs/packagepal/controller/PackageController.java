@@ -2,7 +2,6 @@ package com.tqs.packagepal.controller;
 
 import com.tqs.packagepal.model.DeliveryStatus;
 import com.tqs.packagepal.model.Package;
-import com.tqs.packagepal.model.PickupPoint;
 import com.tqs.packagepal.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.packagepal.service.PickupPointService;
-
 @RestController
 @CrossOrigin(origins={"http://localhost:3000", "http://127.0.0.1:3000"})
 @RequestMapping("/api/v1/packages/")
@@ -21,9 +18,6 @@ public class PackageController {
 
     @Autowired
     private PackageService packageService;
-
-    @Autowired
-    private PickupPointService pickupPointService;
 
     @GetMapping
     public ResponseEntity<List<Package>> getAllPackages() {
@@ -48,7 +42,7 @@ public class PackageController {
         }
         return ResponseEntity.noContent().build();
     }
-    
+
     @PutMapping("/{packageId}/status")
     public ResponseEntity<Package> updatePackageStatus(
         @PathVariable("packageId") String packageId,

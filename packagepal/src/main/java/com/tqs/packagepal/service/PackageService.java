@@ -1,8 +1,6 @@
 package com.tqs.packagepal.service;
 
 import com.tqs.packagepal.model.Package;
-import com.tqs.packagepal.model.PickupPoint;
-import com.tqs.packagepal.model.Store;
 import com.tqs.packagepal.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,7 @@ public class PackageService {
     public Optional<Package> findPackageById(String packageId) {
         return packageRepository.findByPackageId(packageId);
     }
-    
+
     public List<Package> findPackagesByUserEmail(String userEmail) {
         return packageRepository.findByUserEmail(userEmail);
     }
