@@ -23,15 +23,7 @@ public class PackageService {
     public Optional<Package> findPackageById(String packageId) {
         return packageRepository.findByPackageId(packageId);
     }
-
-    public List<Package> findPackagesByPickupPoint(PickupPoint pickupPoint) {
-        return packageRepository.findByPickupPoint(pickupPoint);
-    }
     
-    public List<Package> findPackagesByStore(Store store) {
-        return packageRepository.findByStore(store);
-    }
-
     public List<Package> findPackagesByUserEmail(String userEmail) {
         return packageRepository.findByUserEmail(userEmail);
     }

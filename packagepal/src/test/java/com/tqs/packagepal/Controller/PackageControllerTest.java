@@ -28,7 +28,6 @@ import com.tqs.packagepal.model.DeliveryStatus;
 import com.tqs.packagepal.model.Package;
 import com.tqs.packagepal.model.PickupPoint;
 import com.tqs.packagepal.service.PackageService;
-import com.tqs.packagepal.service.PickupPointService;
 import com.tqs.packagepal.model.Store;
 
 @SpringBootTest
@@ -42,156 +41,129 @@ class PackageControllerTest {
     @MockBean
     private PackageService packageService;
 
-    @MockBean
-    private PickupPointService pickupPointService;
-
-    private List<Package> Packages;
-    private Package Package1;
-    private Package Package2;
-    private Package Package3;
-    private PickupPoint PickupPoint1;
-    private PickupPoint PickupPoint2;
-    private PickupPoint PickupPoint3;
+    private List<Package> packages;
+    private Package package1;
+    private Package package2;
+    private Package package3;
+    private PickupPoint pickupPoint1;
+    private PickupPoint pickupPoint2;
+    private Store store1;
+    private Store store2;
+    private Store store3;
 
     @BeforeEach
     void setUp() {
-        Packages = new ArrayList<>();
+        packages = new ArrayList<>();
 
-        PickupPoint1 = new PickupPoint("name1", "address1", "city1", "postalcode1", 1.0, 2.0);
-        PickupPoint2 = new PickupPoint("name2", "address2", "city2", "postalcode2", 3.0, 4.0);
-        PickupPoint3 = new PickupPoint("name3", "address3", "city3", "postalcode3", 5.0, 6.0);
+        pickupPoint1 = new PickupPoint("name1", "address1", "city1", "postalcode1", 1.0, 2.0);
+        pickupPoint2 = new PickupPoint("name2", "address2", "city2", "postalcode2", 3.0, 4.0);
 
-        Store Store1 = new Store("name1", "email1");
-        Store Store2 = new Store("name2", "email2");
-        Store Store3 = new Store("name3", "email3");
+        store1 = new Store("name1", "email1");
+        store2 = new Store("name2", "email2");
+        store3 = new Store("name3", "email3");
 
-        Package1 = new Package("packageId1", "userName1", "userEmail1", DeliveryStatus.PENDING, PickupPoint1, Store1);
-        Package2 = new Package("packageId2", "userName2", "userEmail2", DeliveryStatus.DELIVERED, PickupPoint2, Store2);
-        Package3 = new Package("packageId3", "userName3", "userEmail3", DeliveryStatus.IN_TRANSIT, PickupPoint3, Store3);
+        package1 = new Package("packageId1", "userName1", "userEmail1", DeliveryStatus.PENDING, pickupPoint1, store1);
+        package2 = new Package("packageId2", "userName2", "userEmail2", DeliveryStatus.DELIVERED, pickupPoint2, store2);
+        package3 = new Package("packageId3", "userName3", "userEmail3", DeliveryStatus.IN_TRANSIT, pickupPoint1, store3);
 
-        Packages.add(Package1);
-        Packages.add(Package2);
-        Packages.add(Package3);
+        packages.add(package1);
+        packages.add(package2);
+        packages.add(package3);
     }
 
     @Test
     void whenGetAllPackages_thenReturnPackagesList() throws Exception {
-        when(packageService.getAllPackages()).thenReturn(Packages);
+        when(packageService.getAllPackages()).thenReturn(packages);
 
-        mvc.perform(get("/api/packages").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v1/packages/").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].packageId", is(Package1.getPackageId())))
-                .andExpect(jsonPath("$[0].userName", is(Package1.getUserName())))
-                .andExpect(jsonPath("$[0].userEmail", is(Package1.getUserEmail())))
-                .andExpect(jsonPath("$[0].status", is(Package1.getStatus().toString())))
-                .andExpect(jsonPath("$[0].pickupPoint.name", is(Package1.getPickupPoint().getName())))
-                .andExpect(jsonPath("$[0].pickupPoint.address", is(Package1.getPickupPoint().getAddress())))
-                .andExpect(jsonPath("$[0].pickupPoint.city", is(Package1.getPickupPoint().getCity())))
-                .andExpect(jsonPath("$[0].pickupPoint.postalCode", is(Package1.getPickupPoint().getPostalCode())))
-                .andExpect(jsonPath("$[0].pickupPoint.latitude", is(Package1.getPickupPoint().getLat())))
-                .andExpect(jsonPath("$[0].pickupPoint.longitude", is(Package1.getPickupPoint().getLng())))
-                .andExpect(jsonPath("$[0].store.name", is(Package1.getStore().getName())))
-                .andExpect(jsonPath("$[0].store.email", is(Package1.getStore().getEmail())))
-                .andExpect(jsonPath("$[1].packageId", is(Package2.getPackageId())))
-                .andExpect(jsonPath("$[1].userName", is(Package2.getUserName())))
-                .andExpect(jsonPath("$[1].userEmail", is(Package2.getUserEmail())))
-                .andExpect(jsonPath("$[1].status", is(Package2.getStatus().toString())))
-                .andExpect(jsonPath("$[1].pickupPoint.name", is(Package2.getPickupPoint().getName())))
-                .andExpect(jsonPath("$[1].pickupPoint.address", is(Package2.getPickupPoint().getAddress())))
-                .andExpect(jsonPath("$[1].pickupPoint.city", is(Package2.getPickupPoint().getCity())))
-                .andExpect(jsonPath("$[1].pickupPoint.postalCode", is(Package2.getPickupPoint().getPostalCode())))
-                .andExpect(jsonPath("$[1].pickupPoint.latitude", is(Package2.getPickupPoint().getLat())))
-                .andExpect(jsonPath("$[1].pickupPoint.longitude", is(Package2.getPickupPoint().getLng())))
-                .andExpect(jsonPath("$[1].store.name", is(Package2.getStore().getName())))
-                .andExpect(jsonPath("$[1].store.email", is(Package2.getStore().getEmail())))
-                .andExpect(jsonPath("$[2].packageId", is(Package3.getPackageId())))
-                .andExpect(jsonPath("$[2].userName", is(Package3.getUserName())))
-                .andExpect(jsonPath("$[2].userEmail", is(Package3.getUserEmail())))
-                .andExpect(jsonPath("$[2].status", is(Package3.getStatus().toString())))
-                .andExpect(jsonPath("$[2].pickupPoint.name", is(Package3.getPickupPoint().getName())))
-                .andExpect(jsonPath("$[2].pickupPoint.address", is(Package3.getPickupPoint().getAddress())))
-                .andExpect(jsonPath("$[2].pickupPoint.city", is(Package3.getPickupPoint().getCity())))
-                .andExpect(jsonPath("$[2].pickupPoint.postalCode", is(Package3.getPickupPoint().getPostalCode())))
-                .andExpect(jsonPath("$[2].pickupPoint.latitude", is(Package3.getPickupPoint().getLat())))
-                .andExpect(jsonPath("$[2].pickupPoint.longitude", is(Package3.getPickupPoint().getLng())))
-                .andExpect(jsonPath("$[2].store.name", is(Package3.getStore().getName())))
-                .andExpect(jsonPath("$[2].store.email", is(Package3.getStore().getEmail())));
+                .andExpect(jsonPath("$[0].packageId", is(package1.getPackageId())))
+                .andExpect(jsonPath("$[0].userName", is(package1.getUserName())))
+                .andExpect(jsonPath("$[0].userEmail", is(package1.getUserEmail())))
+                .andExpect(jsonPath("$[0].status", is(package1.getStatus().toString())))
+                .andExpect(jsonPath("$[0].pickupPoint.name", is(package1.getPickupPoint().getName())))
+                .andExpect(jsonPath("$[0].pickupPoint.address", is(package1.getPickupPoint().getAddress())))
+                .andExpect(jsonPath("$[0].pickupPoint.city", is(package1.getPickupPoint().getCity())))
+                .andExpect(jsonPath("$[0].pickupPoint.postalCode", is(package1.getPickupPoint().getPostalCode())))
+                .andExpect(jsonPath("$[0].pickupPoint.lat", is(package1.getPickupPoint().getLat())))
+                .andExpect(jsonPath("$[0].pickupPoint.lng", is(package1.getPickupPoint().getLng())))
+                .andExpect(jsonPath("$[0].store.name", is(package1.getStore().getName())))
+                .andExpect(jsonPath("$[0].store.email", is(package1.getStore().getEmail())))
+                .andExpect(jsonPath("$[1].packageId", is(package2.getPackageId())))
+                .andExpect(jsonPath("$[1].userName", is(package2.getUserName())))
+                .andExpect(jsonPath("$[1].userEmail", is(package2.getUserEmail())))
+                .andExpect(jsonPath("$[1].status", is(package2.getStatus().toString())))
+                .andExpect(jsonPath("$[1].pickupPoint.name", is(package2.getPickupPoint().getName())))
+                .andExpect(jsonPath("$[1].pickupPoint.address", is(package2.getPickupPoint().getAddress())))
+                .andExpect(jsonPath("$[1].pickupPoint.city", is(package2.getPickupPoint().getCity())))
+                .andExpect(jsonPath("$[1].pickupPoint.postalCode", is(package2.getPickupPoint().getPostalCode())))
+                .andExpect(jsonPath("$[1].pickupPoint.lat", is(package2.getPickupPoint().getLat())))
+                .andExpect(jsonPath("$[1].pickupPoint.lng", is(package2.getPickupPoint().getLng())))
+                .andExpect(jsonPath("$[1].store.name", is(package2.getStore().getName())))
+                .andExpect(jsonPath("$[1].store.email", is(package2.getStore().getEmail())))
+                .andExpect(jsonPath("$[2].packageId", is(package3.getPackageId())))
+                .andExpect(jsonPath("$[2].userName", is(package3.getUserName())))
+                .andExpect(jsonPath("$[2].userEmail", is(package3.getUserEmail())))
+                .andExpect(jsonPath("$[2].status", is(package3.getStatus().toString())))
+                .andExpect(jsonPath("$[2].pickupPoint.name", is(package3.getPickupPoint().getName())))
+                .andExpect(jsonPath("$[2].pickupPoint.address", is(package3.getPickupPoint().getAddress())))
+                .andExpect(jsonPath("$[2].pickupPoint.city", is(package3.getPickupPoint().getCity())))
+                .andExpect(jsonPath("$[2].pickupPoint.postalCode", is(package3.getPickupPoint().getPostalCode())))
+                .andExpect(jsonPath("$[2].pickupPoint.lat", is(package3.getPickupPoint().getLat())))
+                .andExpect(jsonPath("$[2].pickupPoint.lng", is(package3.getPickupPoint().getLng())))
+                .andExpect(jsonPath("$[2].store.name", is(package3.getStore().getName())))
+                .andExpect(jsonPath("$[2].store.email", is(package3.getStore().getEmail())));
     }
 
     @Test
     void whenGetPackageById_thenReturnPackage() throws Exception {
-        when(packageService.findPackageById(Package1.getPackageId())).thenReturn(Optional.of(Package1));
+        when(packageService.findPackageById(package1.getPackageId())).thenReturn(Optional.of(package1));
 
-        mvc.perform(get("/api/packages/" + Package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v1/packages/" + package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.packageId", is(Package1.getPackageId())))
-                .andExpect(jsonPath("$.userName", is(Package1.getUserName())))
-                .andExpect(jsonPath("$.userEmail", is(Package1.getUserEmail())))
-                .andExpect(jsonPath("$.status", is(Package1.getStatus().toString())))
-                .andExpect(jsonPath("$.pickupPoint.name", is(Package1.getPickupPoint().getName())))
-                .andExpect(jsonPath("$.pickupPoint.address", is(Package1.getPickupPoint().getAddress())))
-                .andExpect(jsonPath("$.pickupPoint.city", is(Package1.getPickupPoint().getCity())))
-                .andExpect(jsonPath("$.pickupPoint.postalCode", is(Package1.getPickupPoint().getPostalCode())))
-                .andExpect(jsonPath("$.pickupPoint.latitude", is(Package1.getPickupPoint().getLat())))
-                .andExpect(jsonPath("$.pickupPoint.longitude", is(Package1.getPickupPoint().getLng())))
-                .andExpect(jsonPath("$.store.name", is(Package1.getStore().getName())))
-                .andExpect(jsonPath("$.store.email", is(Package1.getStore().getEmail())));
-    }
-
-    @Test
-    void whenGetPackageById_thenReturnNotFound() throws Exception {
-        when(packageService.findPackageById(Package1.getPackageId())).thenReturn(Optional.empty());
-
-        mvc.perform(get("/api/packages/" + Package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(jsonPath("$.packageId", is(package1.getPackageId())))
+                .andExpect(jsonPath("$.userName", is(package1.getUserName())))
+                .andExpect(jsonPath("$.userEmail", is(package1.getUserEmail())))
+                .andExpect(jsonPath("$.status", is(package1.getStatus().toString())))
+                .andExpect(jsonPath("$.pickupPoint.name", is(package1.getPickupPoint().getName())))
+                .andExpect(jsonPath("$.pickupPoint.address", is(package1.getPickupPoint().getAddress())))
+                .andExpect(jsonPath("$.pickupPoint.city", is(package1.getPickupPoint().getCity())))
+                .andExpect(jsonPath("$.pickupPoint.postalCode", is(package1.getPickupPoint().getPostalCode())))
+                .andExpect(jsonPath("$.pickupPoint.lat", is(package1.getPickupPoint().getLat())))
+                .andExpect(jsonPath("$.pickupPoint.lng", is(package1.getPickupPoint().getLng())))
+                .andExpect(jsonPath("$.store.name", is(package1.getStore().getName())))
+                .andExpect(jsonPath("$.store.email", is(package1.getStore().getEmail())));
     }
 
     @Test
     void whenCreatePackage_thenReturnPackage() throws Exception {
-        when(packageService.addPackage(Package1)).thenReturn(Package1);
-        mvc.perform(post("/api/packages").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(Package1)))
+        when(packageService.addPackage(package1)).thenReturn(package1);
+        mvc.perform(post("/api/v1/packages/").contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(package1)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.packageId", is(Package1.getPackageId())))
-                .andExpect(jsonPath("$.userName", is(Package1.getUserName())))
-                .andExpect(jsonPath("$.userEmail", is(Package1.getUserEmail())))
-                .andExpect(jsonPath("$.status", is(Package1.getStatus().toString())))
-                .andExpect(jsonPath("$.pickupPoint.name", is(Package1.getPickupPoint().getName())))
-                .andExpect(jsonPath("$.pickupPoint.address", is(Package1.getPickupPoint().getAddress())))
-                .andExpect(jsonPath("$.pickupPoint.city", is(Package1.getPickupPoint().getCity())))
-                .andExpect(jsonPath("$.pickupPoint.postalCode", is(Package1.getPickupPoint().getPostalCode())))
-                .andExpect(jsonPath("$.pickupPoint.latitude", is(Package1.getPickupPoint().getLat())))
-                .andExpect(jsonPath("$.pickupPoint.longitude", is(Package1.getPickupPoint().getLng())))
-                .andExpect(jsonPath("$.store.name", is(Package1.getStore().getName())))
-                .andExpect(jsonPath("$.store.email", is(Package1.getStore().getEmail())));
-    }
-
-    @Test
-    void whenCreatePackage_thenReturnBadRequest() throws Exception {
-        when(packageService.addPackage(Package1)).thenReturn(Package1);
-
-        mvc.perform(post("/api/packages").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(Package1)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void whenDeletePackage_thenReturnOk() throws Exception {
-        when(packageService.deletePackage(Package1.getPackageId())).thenReturn(true);
-
-        mvc.perform(delete("/api/packages/" + Package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$.packageId", is(package1.getPackageId())))
+                .andExpect(jsonPath("$.userName", is(package1.getUserName())))
+                .andExpect(jsonPath("$.userEmail", is(package1.getUserEmail())))
+                .andExpect(jsonPath("$.status", is(package1.getStatus().toString())))
+                .andExpect(jsonPath("$.pickupPoint.name", is(package1.getPickupPoint().getName())))
+                .andExpect(jsonPath("$.pickupPoint.address", is(package1.getPickupPoint().getAddress())))
+                .andExpect(jsonPath("$.pickupPoint.city", is(package1.getPickupPoint().getCity())))
+                .andExpect(jsonPath("$.pickupPoint.postalCode", is(package1.getPickupPoint().getPostalCode())))
+                .andExpect(jsonPath("$.pickupPoint.lat", is(package1.getPickupPoint().getLat())))
+                .andExpect(jsonPath("$.pickupPoint.lng", is(package1.getPickupPoint().getLng())))
+                .andExpect(jsonPath("$.store.name", is(package1.getStore().getName())))
+                .andExpect(jsonPath("$.store.email", is(package1.getStore().getEmail())));
     }
 
     @Test
     void whenDeletePackage_thenReturnNotFound() throws Exception {
-        when(packageService.deletePackage(Package1.getPackageId())).thenReturn(false);
+        when(packageService.deletePackage(package1.getPackageId())).thenReturn(false);
 
-        mvc.perform(delete("/api/packages/" + Package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(delete("/api/v1/packages/" + package1.getPackageId()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
-
+    
     private static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

@@ -48,17 +48,7 @@ public class PackageController {
         }
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/pickuppoint/{id}")
-    public ResponseEntity<List<Package>> getPackagesByPickupPoint(@PathVariable Long id) {
-        Optional<PickupPoint> pickupPoint = pickupPointService.getPickupPointById(id);
-        if(pickupPoint.isPresent()){
-            List<Package> packages = packageService.findPackagesByPickupPoint(pickupPoint.get());
-            return ResponseEntity.ok().body(packages);
-        }
-        return ResponseEntity.noContent().build();
-    }
-
+    
     @PutMapping("/{packageId}/status")
     public ResponseEntity<Package> updatePackageStatus(
         @PathVariable("packageId") String packageId,
@@ -82,7 +72,7 @@ public class PackageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePackage(@PathVariable("id") Long packageId) {
+    public ResponseEntity<Void> deletePackage(@PathVariable("id") String packageId) {
         boolean deleted = packageService.deletePackage(packageId);
         if (deleted) {
             return ResponseEntity.noContent().build();

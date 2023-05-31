@@ -92,48 +92,6 @@ class PackageServiceTest {
     }
 
     @Test
-    void whenFindPackagesByPickupPoint_thenReturnPackages() {
-        when(packageRepository.findByPickupPoint(PickupPoint)).thenReturn(Packages);
-
-        List<Package> returnedPackages = packageService.findPackagesByPickupPoint(PickupPoint);
-
-        assertEquals(Packages, returnedPackages);
-        verify(packageRepository, times(1)).findByPickupPoint(PickupPoint);
-    }
-
-    @Test
-    void whenFindPackagesByInvalidPickupPoint_thenReturnEmptyList() {
-        PickupPoint invalidPickupPoint = new PickupPoint();
-        when(packageRepository.findByPickupPoint(invalidPickupPoint)).thenReturn(new ArrayList<>());
-
-        List<Package> returnedPackages = packageService.findPackagesByPickupPoint(invalidPickupPoint);
-
-        assertThat(returnedPackages).isEmpty();
-        verify(packageRepository, times(1)).findByPickupPoint(invalidPickupPoint);
-    }
-
-    @Test
-    void whenFindPackagesByStore_thenReturnPackages() {
-        when(packageRepository.findByStore(Store)).thenReturn(Packages);
-
-        List<Package> returnedPackages = packageService.findPackagesByStore(Store);
-
-        assertEquals(Packages, returnedPackages);
-        verify(packageRepository, times(1)).findByStore(Store);
-    }
-
-    @Test
-    void whenFindPackagesByInvalidStore_thenReturnEmptyList() {
-        Store invalidStore = new Store();
-        when(packageRepository.findByStore(invalidStore)).thenReturn(new ArrayList<>());
-
-        List<Package> returnedPackages = packageService.findPackagesByStore(invalidStore);
-
-        assertThat(returnedPackages).isEmpty();
-        verify(packageRepository, times(1)).findByStore(invalidStore);
-    }
-
-    @Test
     void whenFindPackagesByUserEmail_thenReturnPackages() {
         String userEmail = "email1";
         when(packageRepository.findByUserEmail(userEmail)).thenReturn(Packages);
@@ -175,27 +133,27 @@ class PackageServiceTest {
 
     @Test
     void whenDeletePackage_withExistingPackageId_thenReturnTrue() {
-        Long existingPackageId = 1L;
+        String existingPackageId = "packageId1";
 
-        when(packageRepository.findById(existingPackageId)).thenReturn(Optional.of(Package1));
+        when(packageRepository.findByPackageId(existingPackageId)).thenReturn(Optional.of(Package1));
 
         boolean isDeleted = packageService.deletePackage(existingPackageId);
 
         assertTrue(isDeleted);
-        verify(packageRepository, times(1)).findById(existingPackageId);
+        verify(packageRepository, times(1)).findByPackageId(existingPackageId);
         verify(packageRepository, times(1)).delete(Package1);
     }
 
     @Test
     void whenDeletePackage_withNonExistingPackageId_thenReturnFalse() {
-        Long nonExistingPackageId = 100L;
+        String nonExistingPackageId = "nonExistingPackageId";
 
-        when(packageRepository.findById(nonExistingPackageId)).thenReturn(Optional.empty());
+        when(packageRepository.findByPackageId(nonExistingPackageId)).thenReturn(Optional.empty());
 
         boolean isDeleted = packageService.deletePackage(nonExistingPackageId);
 
         assertFalse(isDeleted);
-        verify(packageRepository, times(1)).findById(nonExistingPackageId);
+        verify(packageRepository, times(1)).findByPackageId(nonExistingPackageId);
         verify(packageRepository, times(0)).delete(Package1);
     }
     

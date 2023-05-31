@@ -100,42 +100,6 @@ public class PackageRepositoryTest {
     }
 
     @Test
-    void whenGetPackageByPickupPoint_thenReturnPackage() {
-        testEntityManager.persistAndFlush(Package1);
-        List<Package> Package1List = new ArrayList<>(Arrays.asList(Package1));
-        List<Package> returnedPackages = packageRepository.findByPickupPoint(Package1.getPickupPoint());
-
-        assertEquals(Package1List, returnedPackages);
-    }
-
-    @Test
-    void whenGetPackageByInvalidPickupPoint_thenReturnEmptyList() {
-        PickupPoint pickupPoint = new PickupPoint();
-        testEntityManager.persistAndFlush(pickupPoint);
-        List<Package> returnedPackages = packageRepository.findByPickupPoint(pickupPoint);
-
-        assertThat(returnedPackages.isEmpty());
-    }
-
-    @Test
-    void whenGetPackageByStore_thenReturnPackage() {
-        testEntityManager.persistAndFlush(Package1);
-        List<Package> Package1List = new ArrayList<>(Arrays.asList(Package1));
-        List<Package> returnedPackages = packageRepository.findByStore(Package1.getStore());
-
-        assertEquals(Package1List, returnedPackages);
-    }
-
-    @Test
-    void whenGetPackageByInvalidStore_thenReturnEmptyList() {
-        Store store = new Store();
-        testEntityManager.persistAndFlush(store);
-        List<Package> returnedPackages = packageRepository.findByStore(store);
-
-        assertThat(returnedPackages.isEmpty());
-    }
-
-    @Test
     void whenGetPackageByUserEmail_thenReturnPackages() {
         testEntityManager.persistAndFlush(Package1);
         testEntityManager.persistAndFlush(Package2);
