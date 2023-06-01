@@ -22,7 +22,7 @@ import com.tqs.packagepal.repository.PackageRepository;
 import com.tqs.packagepal.model.DeliveryStatus;
 
 @DataJpaTest
-public class PackageRepositoryTest {
+class PackageRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -112,9 +112,10 @@ public class PackageRepositoryTest {
     @Test
     void whenGetPackageByInvalidUserEmail_thenReturnEmptyList() {
         String invalidUserEmail = "invalidemail@example.com";
+
         List<Package> returnedPackages = packageRepository.findByUserEmail(invalidUserEmail);
 
-        assertThat(returnedPackages.isEmpty());
+        assertThat(returnedPackages).isEmpty();
     }
 
 }

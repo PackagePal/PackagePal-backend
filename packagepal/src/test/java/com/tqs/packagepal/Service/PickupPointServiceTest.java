@@ -114,4 +114,58 @@ class PickupPointServiceTest {
         verify(pickupPointRepository, times(1)).save(PickupPoint1);
     }
 
+    @Test
+    void whenGetPickupPointByName_thenReturnPickupPoint() {
+        when(pickupPointRepository.findByName(PickupPoint2.getName())).thenReturn(Optional.of(PickupPoint2));
+
+        Optional<PickupPoint> returnedPickupPoint = pickupPointService.getPickupPointByName(PickupPoint2.getName());
+
+        assertEquals(PickupPoint2, returnedPickupPoint.orElse(null));
+        verify(pickupPointRepository, times(1)).findByName(PickupPoint2.getName());
+    }
+
+    @Test
+    void whenGetPickupPointByInvalidName_thenReturnNull() {
+        String invalidName = "invalidName";
+
+        when(pickupPointRepository.findByName(invalidName)).thenReturn(Optional.empty());
+
+        Optional<PickupPoint> returnedPickupPoint = pickupPointService.getPickupPointByName(invalidName);
+
+        assertNull(returnedPickupPoint.orElse(null));
+        verify(pickupPointRepository, times(1)).findByName(invalidName);
+    }
+
+    @Test
+    void whenGetPickupPointByAddress_thenReturnPickupPoint() {
+        when(pickupPointRepository.findByAddress(PickupPoint2.getAddress())).thenReturn(Optional.of(PickupPoint2));
+
+        Optional<PickupPoint> returnedPickupPoint = pickupPointService.getPickupPointByAddress(PickupPoint2.getAddress());
+
+        assertEquals(PickupPoint2, returnedPickupPoint.orElse(null));
+        verify(pickupPointRepository, times(1)).findByAddress(PickupPoint2.getAddress());
+    }
+
+    @Test
+    void whenGetPickupPointByInvalidAddress_thenReturnNull() {
+        String invalidAddress = "invalidAddress";
+
+        when(pickupPointRepository.findByAddress(invalidAddress)).thenReturn(Optional.empty());
+
+        Optional<PickupPoint> returnedPickupPoint = pickupPointService.getPickupPointByAddress(invalidAddress);
+
+        assertNull(returnedPickupPoint.orElse(null));
+        verify(pickupPointRepository, times(1)).findByAddress(invalidAddress);
+    }
+
+    @Test
+    void whenGetPickupPointByCity_thenReturnPickupPoint() {
+        when(pickupPointRepository.findByCity(PickupPoint2.getCity())).thenReturn(Optional.of(PickupPoint2));
+
+        Optional<PickupPoint> returnedPickupPoint = pickupPointService.getPickupPointsByCity(PickupPoint2.getCity());
+
+        assertEquals(PickupPoint2, returnedPickupPoint.orElse(null));
+        verify(pickupPointRepository, times(1)).findByCity(PickupPoint2.getCity());
+    }
+
 }
