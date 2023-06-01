@@ -11,7 +11,7 @@
 	<groupId>com.tqs</groupId>
 	<artifactId>packagepal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>packagepal</name>
 	<description>PackagePal Backend</description>
 	<properties>
@@ -36,9 +36,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 		<dependency>
             <groupId>com.h2database</groupId>
