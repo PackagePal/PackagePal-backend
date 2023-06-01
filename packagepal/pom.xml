@@ -22,6 +22,7 @@
 			${project.basedir}/report-aggregate/target/site/
 			jacoco-aggregate/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.branch.name>main</sonar.branch.name>
 	</properties>
 	<dependencies>
 		<dependency>
