@@ -114,6 +114,7 @@ class PickupPointServiceTest {
         verify(pickupPointRepository, times(1)).save(PickupPoint1);
     }
 
+
     @Test
     void whenGetPickupPointByName_thenReturnPickupPoint() {
         when(pickupPointRepository.findByName(PickupPoint2.getName())).thenReturn(Optional.of(PickupPoint2));
@@ -167,5 +168,4 @@ class PickupPointServiceTest {
         assertEquals(PickupPoint2, returnedPickupPoint.orElse(null));
         verify(pickupPointRepository, times(1)).findByCity(PickupPoint2.getCity());
     }
-
 }
