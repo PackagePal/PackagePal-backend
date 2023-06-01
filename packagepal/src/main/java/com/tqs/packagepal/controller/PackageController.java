@@ -61,6 +61,8 @@ public class PackageController {
         }
     }
 
+    // TESTAR
+
     @PostMapping
     public ResponseEntity<Package> createPackage(@RequestBody Package pack) {
         Package createdPackage = packageService.addPackage(pack);
