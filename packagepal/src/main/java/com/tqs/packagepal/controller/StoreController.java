@@ -19,9 +19,7 @@ import com.tqs.packagepal.service.StoreService;
 
 @RestController
 @CrossOrigin(origins={"http://192.168.160.234:8080", "http://192.168.160.234:3000/",
-                        "http://192.168.160.234:8080", "http://192.168.160.234:3001/",
-                        "http://localhost:8080", "http://localhost:3000/",
-                        "http://localhost:8080", "http://localhost:3001/"})
+                        "http://192.168.160.234:8080", "http://192.168.160.234:3001/"})
 @RequestMapping("/api/v1/stores/")
 public class StoreController {
 
