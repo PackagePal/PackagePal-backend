@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +47,9 @@ public class PackageController {
     @PutMapping("/{packageId}/status")
     public ResponseEntity<Package> updatePackageStatus(
         @PathVariable("packageId") String packageId,
-        @RequestBody DeliveryStatus newStatus
+        @RequestBody JsonNode jsonNode
     ) {
+        DeliveryStatus newStatus = DeliveryStatus.valueOf(jsonNode.get("newStatus").asText());
         Optional<Package> optionalPackage = packageService.findPackageById(packageId);
         if (optionalPackage.isPresent()) {
             Package pack = optionalPackage.get();

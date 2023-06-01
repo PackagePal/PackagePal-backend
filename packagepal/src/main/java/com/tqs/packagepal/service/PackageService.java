@@ -1,5 +1,6 @@
 package com.tqs.packagepal.service;
 
+import com.tqs.packagepal.model.DeliveryStatus;
 import com.tqs.packagepal.model.Package;
 import com.tqs.packagepal.repository.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
