@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins={"http://localhost:3000", "http://127.0.0.1:3000"})
+@CrossOrigin(origins={"http://192.168.160.234:8080", "http://192.168.160.234:3000/",
+                        "http://192.168.160.234:8080", "http://192.168.160.234:3001/",
+                        "http://localhost:8080", "http://localhost:3000/",
+                        "http://localhost:8080", "http://localhost:3001/"})
 @RequestMapping("/api/v1/packages/")
 public class PackageController {
 
