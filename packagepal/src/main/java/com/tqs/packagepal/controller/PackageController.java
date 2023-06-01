@@ -2,17 +2,15 @@ package com.tqs.packagepal.controller;
 
 import com.tqs.packagepal.model.DeliveryStatus;
 import com.tqs.packagepal.model.Package;
-import com.tqs.packagepal.model.PickupPoint;
 import com.tqs.packagepal.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.Optional;
-
-import com.tqs.packagepal.service.PickupPointService;
 
 @RestController
 @CrossOrigin(origins={"http://localhost:3000", "http://127.0.0.1:3000"})
@@ -21,9 +19,6 @@ public class PackageController {
 
     @Autowired
     private PackageService packageService;
-
-    @Autowired
-    private PickupPointService pickupPointService;
 
     @GetMapping
     public ResponseEntity<List<Package>> getAllPackages() {
@@ -49,21 +44,12 @@ public class PackageController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/pickuppoint/{id}")
-    public ResponseEntity<List<Package>> getPackagesByPickupPoint(@PathVariable Long id) {
-        Optional<PickupPoint> pickupPoint = pickupPointService.getPickupPointById(id);
-        if(pickupPoint.isPresent()){
-            List<Package> packages = packageService.findPackagesByPickupPoint(pickupPoint.get());
-            return ResponseEntity.ok().body(packages);
-        }
-        return ResponseEntity.noContent().build();
-    }
-
     @PutMapping("/{packageId}/status")
     public ResponseEntity<Package> updatePackageStatus(
         @PathVariable("packageId") String packageId,
-        @RequestBody DeliveryStatus newStatus
+        @RequestBody JsonNode jsonNode
     ) {
+        DeliveryStatus newStatus = DeliveryStatus.valueOf(jsonNode.get("newStatus").asText());
         Optional<Package> optionalPackage = packageService.findPackageById(packageId);
         if (optionalPackage.isPresent()) {
             Package pack = optionalPackage.get();
@@ -82,7 +68,7 @@ public class PackageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePackage(@PathVariable("id") Long packageId) {
+    public ResponseEntity<Void> deletePackage(@PathVariable("id") String packageId) {
         boolean deleted = packageService.deletePackage(packageId);
         if (deleted) {
             return ResponseEntity.noContent().build();
