@@ -54,8 +54,8 @@ public class PackageController {
         if (optionalPackage.isPresent()) {
             Package pack = optionalPackage.get();
             pack.setStatus(newStatus);
-            Package updatedPackage = packageService.addPackage(pack);
-            return ResponseEntity.ok(updatedPackage);
+            packageService.updatePackageStatus(pack); // Atualiza o status diretamente no serviço
+            return ResponseEntity.ok(pack); // Retorna a package atualizada
         } else {
             return ResponseEntity.notFound().build();
         }

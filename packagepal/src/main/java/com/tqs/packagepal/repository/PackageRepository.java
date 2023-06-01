@@ -11,5 +11,6 @@ import com.tqs.packagepal.model.Package;
 @Repository
 public interface PackageRepository extends JpaRepository<Package,Long>{
     Optional<Package> findByPackageId(String packageId);
-    List<Package> findByUserEmail(String userEmail);  
+    List<Package> findByUserEmail(String userEmail);
+    List<Package> findByPickupPointName(String pickupPointName);
 }
