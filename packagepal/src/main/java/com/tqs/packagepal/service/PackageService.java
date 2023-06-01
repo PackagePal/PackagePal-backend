@@ -26,6 +26,14 @@ public class PackageService {
         return packageRepository.findByUserEmail(userEmail);
     }
 
+    public List<Package> getPackagesByPickupPoint(String pickupPointName) {
+        return packageRepository.findByPickupPointName(pickupPointName);
+    }
+
+    public Package updatePackageStatus(Package pack) {
+        return packageRepository.save(pack);
+    }
+
     public Package addPackage(Package pack) {
         Optional<Package> packageOptional = packageRepository.findByPackageId(pack.getPackageId());
         if (packageOptional.isPresent()) {
