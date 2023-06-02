@@ -2,5 +2,8 @@
 
 ### to run
 
-```docker run -p 8080:8080 packagepal-backend```
+```docker start package-backend```
 
+## to stop
+
+```docker stop package-backend```
