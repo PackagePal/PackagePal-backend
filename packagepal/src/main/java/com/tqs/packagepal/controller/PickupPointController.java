@@ -27,7 +27,7 @@ public class PickupPointController {
 
     private HttpHeaders createCorsHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Control-Allow-Origin", "*");
+        headers.set("ACCESS", "*");
         return headers;
     }
 
