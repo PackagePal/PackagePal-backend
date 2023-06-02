@@ -3,6 +3,7 @@ package com.tqs.packagepal.Repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ import com.tqs.packagepal.repository.PackageRepository;
 import com.tqs.packagepal.model.DeliveryStatus;
 
 @DataJpaTest
-public class PackageRepositoryTest {
+class PackageRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -113,8 +114,7 @@ public class PackageRepositoryTest {
     void whenGetPackageByInvalidUserEmail_thenReturnEmptyList() {
         String invalidUserEmail = "invalidemail@example.com";
         List<Package> returnedPackages = packageRepository.findByUserEmail(invalidUserEmail);
-
-        assertThat(returnedPackages.isEmpty());
+        assertTrue(returnedPackages.isEmpty());
     }
 
 }
