@@ -12,12 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      # Aqui você pode adicionar etapas adicionais para construir e testar o seu aplicativo
-
-      - name: Build Docker image
-        run: docker build -t packagepal-backend .
-
+        
   deploy:
     needs: build
     runs-on: self-hosted
@@ -29,6 +24,8 @@ jobs:
           host: deti-tqs-13.ua.pt
           username: jsousa11
           password: ${{ secrets.VM_PASSWORD }}
+          source: "."  # Altere para o diretório correto se necessário
+          target: "~"  # Altere para o diretório de destino correto na VM
 
       - name: SSH into VM
         uses: appleboy/ssh-action@master
@@ -37,6 +34,8 @@ jobs:
           username: jsousa11
           password: ${{ secrets.VM_PASSWORD }}
           script: |
+            cd /path/to/destination  # Altere para o diretório de destino correto na VM
             docker stop packagepal-backend || true
             docker rm packagepal-backend || true
+            docker build -t packagepal-backend .
             docker run -d --name packagepal-backend -p 8080:8080 packagepal-backend
