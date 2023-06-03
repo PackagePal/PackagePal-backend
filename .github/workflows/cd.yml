@@ -24,8 +24,8 @@ jobs:
           host: deti-tqs-13.ua.pt
           username: jsousa11
           password: ${{ secrets.VM_PASSWORD }}
-          source: "."  # Altere para o diretório correto se necessário
-          target: "~"  # Altere para o diretório de destino correto na VM
+          source: "."
+          target: "~"
 
       - name: SSH into VM
         uses: appleboy/ssh-action@master
@@ -34,7 +34,7 @@ jobs:
           username: jsousa11
           password: ${{ secrets.VM_PASSWORD }}
           script: |
-            cd /path/to/destination  # Altere para o diretório de destino correto na VM
+            cd /PackagePal-backend/packagepal
             docker stop packagepal-backend || true
             docker rm packagepal-backend || true
             docker build -t packagepal-backend .
