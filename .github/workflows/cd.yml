@@ -1,0 +1,42 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Aqui você pode adicionar etapas adicionais para construir e testar o seu aplicativo
+
+      - name: Build Docker image
+        run: docker build -t packagepal-backend .
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+      - name: Copy files to VM
+        uses: appleboy/scp-action@v1
+        with:
+          host: deti-tqs-13.ua.pt
+          username: jsousa11
+          password: ${{ secrets.VM_PASSWORD }}
+
+      - name: SSH into VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: deti-tqs-13.ua.pt
+          username: jsousa11
+          password: ${{ secrets.VM_PASSWORD }}
+          script: |
+            docker stop packagepal-backend || true
+            docker rm packagepal-backend || true
+            docker run -d --name packagepal-backend -p 8080:8080 packagepal-backend
